@@ -1,13 +1,16 @@
-import { App, Stack } from "aws-cdk-lib";
+import { App, Stack, StackProps } from "aws-cdk-lib";
 import { builder } from "../_core/builder";
 import { tables } from "./tables";
+import { Table } from "aws-cdk-lib/aws-dynamodb";
 
 export class DynamoDBStack extends Stack {
-	constructor(app: App) {
-		super(app, DynamoDBStack.name, {});
-		const builderFunction = builder(this).buildDynamoDBTable;
-		Object.values(tables).map((table) => {
-			table.awsEntity = builderFunction(table.configuration);
+	tables: Map<string, Table> = new Map();
+	constructor(app: App, props: StackProps) {
+		super(app, DynamoDBStack.name, props);
+		const { buildDynamoDBTable } = builder(this);
+		tables.map((table) => {
+			const t = buildDynamoDBTable(table);
+			this.tables.set(table.ref, t);
 		});
 	}
 }

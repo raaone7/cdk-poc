@@ -1,8 +1,9 @@
 import { aws_dynamodb } from "aws-cdk-lib";
-import { DynamoDBTable, DynamoDBTableConfiguration } from "../_core/types";
+import { DynamoDBTableConfiguration } from "../_core/types";
 const { STRING } = aws_dynamodb.AttributeType;
 
-const AddressTable: DynamoDBTableConfiguration = {
+export const AddressTable: DynamoDBTableConfiguration = {
+	ref: "Address",
 	billingMode: aws_dynamodb.BillingMode.PAY_PER_REQUEST,
 	tableName: "Address",
 	partitionKey: { name: "id", type: STRING },
@@ -15,10 +16,4 @@ const AddressTable: DynamoDBTableConfiguration = {
 	],
 };
 
-type DynamoDBTableCollection = Record<string, DynamoDBTable>;
-export const tables: DynamoDBTableCollection = {
-	AddressTable: {
-		configuration: AddressTable,
-		awsEntity: null,
-	},
-};
+export const tables: DynamoDBTableConfiguration[] = [AddressTable];

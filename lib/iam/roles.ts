@@ -1,19 +1,16 @@
 import { aws_iam } from "aws-cdk-lib";
-import { IAMRole, IAMRoleConfiguration } from "../_core/types";
+import { IAMRoleConfiguration } from "../_core/types";
+
+const useAWSManagedPolicy = aws_iam.ManagedPolicy.fromAwsManagedPolicyName;
 
 export const LambdaExecutionRole: IAMRoleConfiguration = {
+	ref: "LambdaExecution",
 	assumedBy: new aws_iam.ServicePrincipal("lambda.amazonaws.com"),
-	roleName: "LambdaExecutionRole",
+	roleName: "LambdaExecution",
 	managedPolicies: [
-		aws_iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3ReadOnlyAccess"),
-		aws_iam.ManagedPolicy.fromAwsManagedPolicyName("AWSLambda_FullAccess"),
+		useAWSManagedPolicy("AmazonDynamoDBFullAccess"),
+		useAWSManagedPolicy("CloudWatchLogsFullAccess"),
 	],
 };
 
-type IAMRoleCollection = Record<string, IAMRole>;
-export const roles: IAMRoleCollection = {
-	LambdaExecutionRole: {
-		configuration: LambdaExecutionRole,
-		awsEntity: null,
-	},
-};
+export const roles: IAMRoleConfiguration[] = [LambdaExecutionRole];

@@ -1,31 +1,26 @@
 input AddressInput {
   userId: String!
   line1: String!
-  line2: String!
-  state: String!
+  line2: String
   suburb: String!
+  state: String!
   postCode: String!
   countryCode: String!
-}
-input AddressFilter {
-  userId: String!
-  suburb: String
-  postCode: String
 }
 type Address {
   userId: String!
   id: String!
   line1: String!
-  line2: String!
-  state: String!
+  line2: String
   suburb: String!
+  state: String!
   postCode: String!
   countryCode: String!
 }
 
 type Query {
-  address(input: AddressFilter): [Address]
-  addressDirect(input: AddressFilter): [Address]
+  address(userId: String!, suburb: String, postCode: String): [Address]
+  addressDirect(userId: String!, suburb: String, postCode: String): [Address]
 }
 type Mutation {
   saveAddress(input: AddressInput): Address

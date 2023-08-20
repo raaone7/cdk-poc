@@ -1,6 +1,7 @@
-import { aws_appsync, aws_dynamodb, aws_iam, aws_lambda, aws_logs } from "aws-cdk-lib";
+import { aws_dynamodb, aws_iam, aws_lambda, aws_logs } from "aws-cdk-lib";
 
 export type DynamoDBTableConfiguration = {
+	ref: string;
 	tableName: string;
 	billingMode: aws_dynamodb.BillingMode;
 	partitionKey: aws_dynamodb.Attribute;
@@ -11,55 +12,57 @@ export type DynamoDBTableConfiguration = {
 		sortKey?: aws_dynamodb.GlobalSecondaryIndexProps["sortKey"];
 	}[];
 };
-export type DynamoDBTable = {
-	configuration: DynamoDBTableConfiguration;
-	awsEntity: aws_dynamodb.Table | null;
-};
 
 export type IAMRoleConfiguration = {
+	ref: string;
 	roleName: string;
 	description?: string;
 	assumedBy: aws_iam.ServicePrincipal;
 	managedPolicies?: aws_iam.IManagedPolicy[];
 };
-export type IAMRole = {
-	configuration: IAMRoleConfiguration;
-	awsEntity: aws_iam.Role | null;
-};
 
 export type LambdaConfiguration = {
+	ref: string;
 	functionName: string;
 	code: aws_lambda.InlineCode;
-	role: aws_iam.Role;
-	logGroup: aws_logs.LogGroup;
-};
-export type LambdaFunction = {
-	configuration: LambdaConfiguration;
-	awsEntity: aws_lambda.Function | null;
+	role: string;
+	logGroup: string;
 };
 
 export type LogGroupConfiguration = {
+	ref: string;
 	logGroupName: string;
 	retention?: aws_logs.RetentionDays;
 };
-export type LogGroup = {
-	configuration: LogGroupConfiguration;
-	awsEntity: aws_logs.LogGroup | null;
+
+export type AppsyncConfiguration = {
+	dataSources: (
+		| {
+				ref: string;
+				type: "lambda";
+				source: string;
+		  }
+		| {
+				ref: string;
+				type: "dynamodb";
+				source: string;
+		  }
+	)[];
+	queries: {
+		resolverPath: string;
+		fieldName: string;
+		dataSourceRef?: string;
+	}[];
+	mutations: {
+		resolverPath: string;
+		fieldName: string;
+		dataSourceRef?: string;
+	}[];
+	schemaPath: string;
+	apiName: string;
 };
 
-export type AppSyncConfiguration = {
-	fieldName: string;
-	type: "Query" | "Mutation";
-	schemaPath: string;
-	resolverPath: string;
-	apiKey?: string;
-	dataSource: {
-		name: string;
-		type: "lambda" | "dynamodb";
-		source: aws_dynamodb.Table | aws_lambda.Function;
-	};
-};
-export type AppSyncAPI = {
-	configuration: AppSyncConfiguration;
-	awsEntity: aws_appsync.GraphqlApi | null;
+export type S3Configuration = {
+	ref: string;
+	bucketName: string;
 };

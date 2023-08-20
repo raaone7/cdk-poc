@@ -30,3 +30,16 @@ aws_secret_access_key = yyyy
 * cdk bootstrap
 * cdk deploy --all --require-approval never
 
+
+mutation MyMutation {
+  saveAddress(input: {userId: "1", suburb: "geelong", state: "vic", countryCode: "AUS", line1: "apt 123", line2: "11 myers steet", postCode: "3220"}) {
+    id
+    countryCode
+    line1
+    postCode
+    state
+    suburb
+    userId
+  }
+}
+

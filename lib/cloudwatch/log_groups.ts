@@ -1,13 +1,8 @@
-import { LogGroup, LogGroupConfiguration } from "../_core/types";
+import { LogGroupConfiguration } from "../_core/types";
 
-const AddressServiceLogGroup: LogGroupConfiguration = {
+export const AddressServiceLogGroup: LogGroupConfiguration = {
+	ref: "AddressService",
 	logGroupName: "AddressService",
 };
 
-type LogGroupCollection = Record<string, LogGroup>;
-export const logGroups: LogGroupCollection = {
-	AddressServiceLogGroup: {
-		configuration: AddressServiceLogGroup,
-		awsEntity: null,
-	},
-};
+export const logGroups: LogGroupConfiguration[] = [AddressServiceLogGroup];
