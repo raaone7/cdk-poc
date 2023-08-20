@@ -30,4 +30,5 @@ aws_secret_access_key = yyyy
 
 
 ## Deployment (from local)
+* pnpm i
 * pnpm run deploy
