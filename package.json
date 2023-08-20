@@ -17,7 +17,7 @@
 		"check": "rome ci .",
 		"typecheck": "tsc --noEmit -p tsconfig.json",
 		"synth": "cdk synth",
-		"deploy": "cdk deploy"
+		"deploy": "cdk deploy --all --require-approval never"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.3",
