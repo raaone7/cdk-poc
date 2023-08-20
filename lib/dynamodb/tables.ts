@@ -8,7 +8,7 @@ const AddressTable: DynamoDBTableConfiguration = {
 	partitionKey: { name: "id", type: STRING },
 	gsi: [
 		{
-			indexName: "userId-index",
+			indexName: "userId-createdAt-index",
 			partitionKey: { name: "userId", type: STRING },
 			sortKey: { name: "createdAt", type: STRING },
 		},

@@ -1,6 +1,6 @@
 import { App, Stack } from "aws-cdk-lib";
-import { lambdas } from "./lambdas";
 import { builder } from "../_core/builder";
+import { lambdas } from "./lambdas";
 
 export class LambdaStack extends Stack {
 	constructor(app: App) {

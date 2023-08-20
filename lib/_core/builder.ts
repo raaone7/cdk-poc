@@ -1,9 +1,18 @@
-import { Duration, Stack, aws_dynamodb, aws_iam, aws_lambda, aws_logs } from "aws-cdk-lib";
+import {
+	Duration,
+	Stack,
+	aws_appsync,
+	aws_dynamodb,
+	aws_iam,
+	aws_lambda,
+	aws_logs,
+} from "aws-cdk-lib";
 import {
 	IAMRoleConfiguration,
 	DynamoDBTableConfiguration,
 	LambdaConfiguration,
 	LogGroupConfiguration,
+	AppSyncConfiguration,
 } from "./types";
 
 export const builder = (stack: Stack) => {
@@ -61,5 +70,50 @@ export const builder = (stack: Stack) => {
 		return lambdaFunction;
 	};
 
-	return { buildIAMRole, buildDynamoDBTable, buildLambdaFunction, buildCloudwatchLogGroup };
+	const buildAppSyncAPI = (configuration: AppSyncConfiguration) => {
+		const api = new aws_appsync.GraphqlApi(stack, "", {
+			name: configuration.fieldName,
+			schema: aws_appsync.SchemaFile.fromAsset(configuration.schemaPath),
+			authorizationConfig: {
+				defaultAuthorization: {
+					authorizationType: aws_appsync.AuthorizationType.API_KEY,
+				},
+			},
+		});
+		switch (configuration.dataSource.type) {
+			case "lambda":
+				api.addLambdaDataSource(
+					configuration.dataSource.name,
+					configuration.dataSource.source as aws_lambda.Function,
+				);
+				break;
+			case "dynamodb":
+				api.addDynamoDbDataSource(
+					configuration.dataSource.name,
+					configuration.dataSource.source as aws_dynamodb.Table,
+				);
+				break;
+			default:
+				api.addNoneDataSource(configuration.dataSource?.name || "NoneDataSource");
+		}
+		new aws_appsync.Resolver(stack, `${configuration.fieldName}Resolver`, {
+			api,
+			fieldName: configuration.fieldName,
+			typeName: configuration.type,
+			// TODO: Fix datasource
+			// dataSource: configuration.dataSource.source,
+			runtime: aws_appsync.FunctionRuntime.JS_1_0_0,
+			code: aws_appsync.Code.fromAsset(configuration.resolverPath),
+		});
+
+		return api;
+	};
+
+	return {
+		buildIAMRole,
+		buildDynamoDBTable,
+		buildLambdaFunction,
+		buildCloudwatchLogGroup,
+		buildAppSyncAPI,
+	};
 };

@@ -1,4 +1,4 @@
-import { aws_dynamodb, aws_iam, aws_lambda, aws_logs } from "aws-cdk-lib";
+import { aws_appsync, aws_dynamodb, aws_iam, aws_lambda, aws_logs } from "aws-cdk-lib";
 
 export type DynamoDBTableConfiguration = {
 	tableName: string;
@@ -45,4 +45,21 @@ export type LogGroupConfiguration = {
 export type LogGroup = {
 	configuration: LogGroupConfiguration;
 	awsEntity: aws_logs.LogGroup | null;
+};
+
+export type AppSyncConfiguration = {
+	fieldName: string;
+	type: "Query" | "Mutation";
+	schemaPath: string;
+	resolverPath: string;
+	apiKey?: string;
+	dataSource: {
+		name: string;
+		type: "lambda" | "dynamodb";
+		source: aws_dynamodb.Table | aws_lambda.Function;
+	};
+};
+export type AppSyncAPI = {
+	configuration: AppSyncConfiguration;
+	awsEntity: aws_appsync.GraphqlApi | null;
 };

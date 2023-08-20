@@ -1,6 +1,6 @@
 import { App, Stack } from "aws-cdk-lib";
-import { tables } from "./tables";
 import { builder } from "../_core/builder";
+import { tables } from "./tables";
 
 export class DynamoDBStack extends Stack {
 	constructor(app: App) {
