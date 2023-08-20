@@ -1,0 +1,32 @@
+{
+	"files": {
+		"ignore": [".github", ".husky", ".vscode", "coverage", "node_modules", "cdk.out", "scripts"]
+	},
+	"formatter": {
+		"lineWidth": 100
+	},
+	"organizeImports": {
+		"enabled": false
+	},
+	"linter": {
+		"rules": {
+			"complexity": {
+				"useSimplifiedLogicExpression": "error"
+			},
+			"correctness": {
+				"noUndeclaredVariables": "error",
+				"noUnusedVariables": "error"
+			},
+			"style": {
+				"useShorthandArrayType": "error",
+				"noRestrictedGlobals": "error"
+			},
+			"nursery": {
+				"useExhaustiveDependencies": "error",
+				"noConsoleLog": "off",
+				"noBannedTypes": "error",
+				"noAccumulatingSpread": "error"
+			}
+		}
+	}
+}
