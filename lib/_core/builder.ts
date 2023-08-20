@@ -154,7 +154,7 @@ export const builder = (stack: Stack) => {
 	};
 
 	const buildS3Bucket = (configuration: S3Configuration) => {
-		return new aws_s3.Bucket(stack, `${configuration.bucketName}`, {
+		return new aws_s3.Bucket(stack, `${configuration.bucketName}Bucket`, {
 			bucketName: configuration.bucketName,
 		});
 	};
