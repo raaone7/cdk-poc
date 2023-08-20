@@ -1,8 +1,4 @@
-# Welcome to your CDK TypeScript project
-
-This is a blank project for CDK development with TypeScript.
-
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+# Welcome to CDK TypeScript project
 
 ## Useful commands
 
@@ -14,7 +10,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `cdk synth`       emits the synthesized CloudFormation template
 
 ## Prerequisites
-* pnpm
+- PNPM: Follow instructions [here](https://pnpm.io/installation)
+* aws account (new or existing)
 * aws CDK 
 ```
 npm install -g aws-cdk
